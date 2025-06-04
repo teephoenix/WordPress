@@ -1,0 +1,24 @@
+version: 0.2
+
+env:
+  variables:
+    AWS_REGION: us-east-1
+    AWS_ACCOUNT_ID: 367428479804
+
+phases:
+  pre_build:
+    commands:
+      - echo Logging in to Amazon ECR...
+      - aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 367428479804.dkr.ecr.us-east-1.amazonaws.com
+
+ build:
+   commands:
+     - echo Building Docker image...
+     - docker build -t wordpress-sample .
+     - docker tag wordpress-sample:latest 367428479804.dkr.ecr.us-east-1.amazonaws.com/wordpress-sample:latest
+     - echo Creating imagedefinitions.json...
+     - printf '[{"name":"wordpress-container","imageUri":"%s"}]' 367428479804.dkr.ecr.us-east-1.amazonaws.com/wordpress-sample:latest > imagedefinitions.json
+
+artifacts:
+  files:
+    - imagedefinitions.json
