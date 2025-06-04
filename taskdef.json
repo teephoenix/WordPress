@@ -1,0 +1,25 @@
+{
+  "family": "wordpress-ec2-task",
+  "networkMode": "bridge",
+  "containerDefinitions": [
+    {
+
+      "name": "wordpress-container",
+      "image": "367428479804.dkr.ecr.us-east-1.amazonaws.com/wordpress-sample:latest",
+      "memory": 512,
+      "cpu": 256,
+      "essential": true,
+      "portMappings": [
+        {
+          "containerPort": 80,
+          "hostPort": 80
+        }
+      ]
+
+    }
+
+  ],
+
+  "requiresCompatibilities": ["EC2"]
+
+}
